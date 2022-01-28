@@ -1,0 +1,72 @@
+USE testdatabase;
+CREATE TABLE student(
+student_id int,
+student_name varchar(255),
+student_surnmame varchar(255)
+);
+
+CREATE TABLE Course(
+course_id int,
+cousrse_name varchar(255),
+user_surnmame varchar(255)
+);
+
+CREATE TABLE Enrollment (
+enrollment_id int,
+student_id int,
+course_id int
+);
+
+
+ALTER TABLE student ADD PRIMARY KEY(student_id) ;
+ALTER TABLE student ADD UNIQUE(student_id) ;
+
+
+ALTER TABLE Course ADD PRIMARY KEY(course_id) ;
+ALTER TABLE Course ADD UNIQUE(course_id) ;
+
+
+ALTER TABLE Enrollment ADD FOREIGN KEY fk_payment_student(student_id)
+REFERENCES student(student_id);
+ALTER TABLE Enrollment ADD FOREIGN KEY fk_payment_course(course_id)
+REFERENCES Course(course_id);
+
+ALTER TABLE COURSE CHANGE USER_SURNMAME DESCRIPTION VARCHAR(500);
+
+INSERT  INTO STUDENT (student_id,STUDENT_NAME,STUDENT_SURNMAME) VALUES(1,'JUAN', 'SANCHEZ');
+INSERT  INTO STUDENT (student_id,STUDENT_NAME,STUDENT_SURNMAME) VALUES(2,'MARIA', 'MORALES');
+INSERT  INTO STUDENT (student_id,STUDENT_NAME,STUDENT_SURNMAME) VALUES(3,'MAY', 'PEREZ');
+
+INSERT  INTO Course (course_id,COUSRSE_NAME,DESCRIPTION) VALUES(1,'Microservices', 'Learn microservices');
+INSERT  INTO Course (course_id,COUSRSE_NAME,DESCRIPTION) VALUES(2,'LamBdas and streams', 'learn lambdas');
+INSERT  INTO Course (course_id,COUSRSE_NAME,DESCRIPTION) VALUES(3,'Unit tests with mockito', 'learn test');
+
+INSERT  INTO ENROLLMENT(enrollment_id,student_id,course_id) VALUES(1,1,1);
+INSERT  INTO ENROLLMENT(enrollment_id,student_id,course_id) VALUES(2,1,2);
+
+DELETE FROM COURSE WHERE COURSE_ID=2;
+DELETE FROM COURSE WHERE COURSE_ID=1;
+DELETE FROM COURSE WHERE COURSE_ID=3;
+
+ALTER TABLE Enrollment ADD FOREIGN KEY fk_payment_courseenrollment(course_id)
+REFERENCES Course(course_id);
+
+ALTER TABLE enrollment 
+DROP FOREIGN KEY enrollment_ibfk_2;
+
+ALTER TABLE enrollment
+ADD CONSTRAINT enrollment_ibfk_2
+  FOREIGN KEY (course_id)
+  REFERENCES course (course_id)
+  ON DELETE CASCADE;
+  
+  
+  SELECT * FROM STUDENT;
+  SELECT * FROM COURSE;
+  SELECT * FROM STUDENT INNER JOIN ENROLLMENT ON STUDENT.STUDENT_ID=ENROLLMENT.STUDENT_ID;
+  
+  
+SELECT * FROM 
+STUDENT INNER JOIN ENROLLMENT ON STUDENT.STUDENT_ID=ENROLLMENT.STUDENT_ID
+INNER JOIN COURSE ON ENROLLMENT.COURSE_ID=COURSE.COURSE_ID;
+
